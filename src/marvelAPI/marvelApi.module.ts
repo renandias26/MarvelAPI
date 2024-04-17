@@ -7,10 +7,11 @@ import { ConfigService } from "@nestjs/config";
 
 @Module({
     imports: [
+        ConfigModule.forRoot(),
         HttpModule.registerAsync({
-            imports: [ConfigModule.forRoot()],
+            imports: [ConfigModule],
             useClass: MarvelApiConfig,
-        })
+        }),
     ],
     providers: [MarvelAPIService],
     exports: [MarvelAPIService],
