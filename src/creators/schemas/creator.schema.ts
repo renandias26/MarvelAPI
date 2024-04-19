@@ -16,6 +16,9 @@ export class Creator {
 
     @Prop({ require: true })
     idApi: number
+
+    @Prop({ require: true })
+    comics: string[]
 }
 
 export const CreatorSchema = SchemaFactory.createForClass(Creator);
