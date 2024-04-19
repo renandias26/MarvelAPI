@@ -6,6 +6,8 @@ import { catchError } from "rxjs/internal/operators/catchError";
 import { Injectable } from "@nestjs/common/decorators/core/injectable.decorator";
 import { ConfigGetOptions, ConfigService } from "@nestjs/config/dist/config.service";
 import { MarvelVariables } from "./interfaces/marvelVariables.interface";
+import { MarvelRequest } from "./interfaces/marvelRequest.interface";
+import { serieData } from "./interfaces/serieData.interface";
 
 @Injectable()
 export class MarvelAPIService {
@@ -41,5 +43,12 @@ export class MarvelAPIService {
                 })
                 )
         )
+    }
+
+    async getSecretWars(): Promise<serieData> {
+        return this.get<MarvelRequest<serieData>>(
+            'series',
+            new URLSearchParams({ title: "Secret Wars", startYear: "2008" })
+        ).then(item => item.data.results.at(0))
     }
 }
