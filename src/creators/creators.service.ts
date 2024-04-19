@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common/decorators/core/injectable.decorator';
-import { CreateCreatorDto } from './dto/create-creator.dto';
-import { UpdateCreatorDto } from './dto/update-creator.dto';
+import { CreatorDto } from './dto/creator.dto';
 import { MarvelAPIService } from 'src/marvelAPI/marvelApi.service';
 import { MarvelRequest } from 'src/marvelAPI/interfaces/marvelRequest.interface';
 import { serieCreator } from './interfaces/serieCreator.inteface';
@@ -17,8 +16,9 @@ export class CreatorsService {
     @InjectModel(Creator.name) private creatorModel: Model<Creator>
   ) { }
 
-  create(createCreatorDto: CreateCreatorDto) {
-    return 'This action adds a new creator';
+  create(CreatorDto: CreatorDto): Promise<Creator> {
+    const createdUser = new this.creatorModel(CreatorDto);
+    return createdUser.save();
   }
 
   async findAll(): Promise<Creator[]> {
@@ -67,15 +67,21 @@ export class CreatorsService {
     return creators
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} creator`;
+  async findOne(id: string): Promise<Creator> {
+    return this.creatorModel.findById(id)
   }
 
-  update(id: number, updateCreatorDto: UpdateCreatorDto) {
-    return `This action updates a #${id} creator`;
+  update(id: string, CreatorDto: CreatorDto): Promise<Creator> {
+    return this.creatorModel.findByIdAndUpdate(id, {
+      comics: CreatorDto.comics,
+      imagePath: CreatorDto.imagePath,
+      role: CreatorDto.role,
+      fullName: CreatorDto.fullName
+    })
+
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} creator`;
+  remove(id: string): Promise<Creator> {
+    return this.creatorModel.findByIdAndDelete(id)
   }
 }

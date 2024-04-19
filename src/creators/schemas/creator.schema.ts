@@ -8,13 +8,13 @@ export class Creator {
     @Prop({ require: true })
     fullName: string;
 
-    @Prop({ require: false })
+    @Prop({ require: true })
     role: String
 
     @Prop({ require: true })
     imagePath: String
 
-    @Prop({ require: true })
+    @Prop({ require: false })
     idApi: number
 
     @Prop({ require: true })
