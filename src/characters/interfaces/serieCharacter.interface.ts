@@ -1,5 +1,3 @@
 export interface serieCharacter {
-    character: {
-        collectionURI: string
-    }
+    collectionURI: string
 }

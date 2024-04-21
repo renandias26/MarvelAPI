@@ -1,15 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe } from '@nestjs/common';
 import { CharactersService } from './characters.service';
-import { CreateCharacterDto } from './dto/create-character.dto';
-import { UpdateCharacterDto } from './dto/update-character.dto';
+import { CharacterDto } from './dto/character.dto';
+import { IsObjectIdPipe } from 'nestjs-object-id/dist/pipes/is-object-id.pipe';
 
 @Controller('characters')
 export class CharactersController {
-  constructor(private readonly charactersService: CharactersService) {}
+  constructor(private readonly charactersService: CharactersService) { }
 
   @Post()
-  create(@Body() createCharacterDto: CreateCharacterDto) {
-    return this.charactersService.create(createCharacterDto);
+  create(@Body(new ValidationPipe()) CharacterDto: CharacterDto) {
+    return this.charactersService.create(CharacterDto);
   }
 
   @Get()
@@ -18,17 +18,17 @@ export class CharactersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.charactersService.findOne(+id);
+  findOne(@Param('id', IsObjectIdPipe) id: string) {
+    return this.charactersService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCharacterDto: UpdateCharacterDto) {
-    return this.charactersService.update(+id, updateCharacterDto);
+  update(@Param('id', IsObjectIdPipe) id: string, @Body(new ValidationPipe()) CharacterDto: CharacterDto) {
+    return this.charactersService.update(id, CharacterDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.charactersService.remove(+id);
+  remove(@Param('id', IsObjectIdPipe) id: string) {
+    return this.charactersService.remove(id);
   }
 }
