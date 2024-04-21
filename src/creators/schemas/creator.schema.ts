@@ -12,13 +12,13 @@ export class Creator {
     role: String
 
     @Prop({ require: true })
+    comics: string[]
+
+    @Prop({ require: false })
     imagePath: String
 
     @Prop({ require: false })
     idApi: number
-
-    @Prop({ require: true })
-    comics: string[]
 }
 
 export const CreatorSchema = SchemaFactory.createForClass(Creator);
