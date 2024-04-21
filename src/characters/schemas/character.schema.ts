@@ -9,10 +9,10 @@ export class Character {
     name: string;
 
     @Prop({ require: false })
-    description: String
+    description: string
 
     @Prop({ require: false })
-    imagePath: String
+    imagePath: string
 
     @Prop({ require: false })
     idApi: number

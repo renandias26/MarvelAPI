@@ -9,13 +9,13 @@ export class Creator {
     fullName: string;
 
     @Prop({ require: true })
-    role: String
+    role: string
 
     @Prop({ require: true })
     comics: string[]
 
     @Prop({ require: false })
-    imagePath: String
+    imagePath: string
 
     @Prop({ require: false })
     idApi: number

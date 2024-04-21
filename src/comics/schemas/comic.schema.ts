@@ -12,10 +12,10 @@ export class Comic {
     pageCount: number
 
     @Prop({ require: true })
-    format: String
+    format: string
 
     @Prop({ require: false })
-    imagePath: String
+    imagePath: string
 
     @Prop({ require: true })
     dateOnStart: Date
