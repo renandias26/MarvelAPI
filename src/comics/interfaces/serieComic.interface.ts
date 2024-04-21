@@ -1,5 +1,3 @@
 export interface serieComic {
-    comics: {
-        collectionURI: string
-    }
+    collectionURI: string
 }

@@ -4,6 +4,6 @@ import { serieCreator } from "src/creators/interfaces/serieCreator.inteface";
 
 export interface serieData {
     creators: serieCreator,
-    comic: serieComic,
-    character: serieCharacter
+    comics: serieComic,
+    characters: serieCharacter
 }

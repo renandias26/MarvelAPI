@@ -1,12 +1,12 @@
 export interface detailComic {
     id: number,
+    pageCount: number,
     title: string,
     description: string,
     format: string,
     dates: {
-        type: string,
         date: Date
-    }
+    }[]
     thumbnail: {
         path: string,
         extension: string

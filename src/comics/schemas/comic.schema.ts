@@ -18,6 +18,9 @@ export class Comic {
     imagePath: String
 
     @Prop({ require: true })
+    dateOnStart: Date
+
+    @Prop({ require: true })
     idApi: number
 }
 

@@ -1,15 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe } from '@nestjs/common';
 import { ComicsService } from './comics.service';
-import { CreateComicDto } from './dto/create-comic.dto';
-import { UpdateComicDto } from './dto/update-comic.dto';
+import { ComicDto } from './dto/comic.dto';
+import { IsObjectIdPipe } from 'nestjs-object-id/dist/pipes/is-object-id.pipe';
 
 @Controller('comics')
 export class ComicsController {
-  constructor(private readonly comicsService: ComicsService) {}
+  constructor(private readonly comicsService: ComicsService) { }
 
   @Post()
-  create(@Body() createComicDto: CreateComicDto) {
-    return this.comicsService.create(createComicDto);
+  create(@Body(new ValidationPipe()) ComicDto: ComicDto) {
+    return this.comicsService.create(ComicDto);
   }
 
   @Get()
@@ -18,17 +18,17 @@ export class ComicsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.comicsService.findOne(+id);
+  findOne(@Param('id', IsObjectIdPipe) id: string) {
+    return this.comicsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateComicDto: UpdateComicDto) {
-    return this.comicsService.update(+id, updateComicDto);
+  update(@Param('id', IsObjectIdPipe) id: string, @Body(new ValidationPipe()) ComicDto: ComicDto) {
+    return this.comicsService.update(id, ComicDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.comicsService.remove(+id);
+  remove(@Param('id', IsObjectIdPipe) id: string) {
+    return this.comicsService.remove(id);
   }
 }
