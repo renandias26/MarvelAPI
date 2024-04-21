@@ -17,8 +17,7 @@ export class CreatorsService {
   ) { }
 
   create(CreatorDto: CreatorDto): Promise<Creator> {
-    const createdUser = new this.creatorModel(CreatorDto);
-    return createdUser.save();
+    return new this.creatorModel(CreatorDto).save()
   }
 
   async findAll(): Promise<Creator[]> {
@@ -30,16 +29,15 @@ export class CreatorsService {
     }
 
     const APIcreators = await this.getCreatorsAPI()
-    this.creatorModel.insertMany(APIcreators)
-    return APIcreators
+    new this.creatorModel(APIcreators).save()
+    return [APIcreators]
   }
 
-  private async getCreatorsAPI(): Promise<Creator[]> {
+  private async getCreatorsAPI(): Promise<Creator> {
     return this.marvelAPI.getSecretWars().then(serieData => this.builCreator(serieData.creators))
   }
 
-  private async builCreator(creator: serieCreator): Promise<Creator[]> {
-    const creators: Creator[] = []
+  private async builCreator(creator: serieCreator): Promise<Creator> {
     const detail = await this.marvelAPI.get<MarvelRequest<detailCreator>>(
       creator.collectionURI
     ).then(item => item.data.results.at(0))
@@ -54,17 +52,13 @@ export class CreatorsService {
       comics = comics.concat(comic)
     }
 
-    let comicsCreator = (await Promise.all(comics)).flat(1).map(item => item.title)
-
-    creators.push({
+    return {
       fullName: detail.fullName,
       role: creator.items.at(0).role,
       idApi: detail.id,
       imagePath: `${detail.thumbnail.path}.${detail.thumbnail.extension}`,
-      comics: comicsCreator
-    })
-
-    return creators
+      comics: (await Promise.all(comics)).flat(1).map(item => item.title)
+    }
   }
 
   async findOne(id: string): Promise<Creator> {
@@ -72,12 +66,7 @@ export class CreatorsService {
   }
 
   update(id: string, CreatorDto: CreatorDto): Promise<Creator> {
-    return this.creatorModel.findByIdAndUpdate(id, {
-      comics: CreatorDto.comics,
-      imagePath: CreatorDto.imagePath,
-      role: CreatorDto.role,
-      fullName: CreatorDto.fullName
-    })
+    return this.creatorModel.findByIdAndUpdate(id, CreatorDto)
 
   }
 
