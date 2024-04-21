@@ -9,22 +9,18 @@ export class CreatorDto {
     comics: string[]
 
     @IsString()
-    @IsNotEmpty()
     @ApiProperty()
     role: string
 
     @IsString()
-    @IsNotEmpty()
     @ApiProperty()
     fullName: string
 
     @IsUrl()
-    @IsString()
     @IsOptional()
     @ApiProperty({ required: false })
     imagePath: string
 
-    @IsNumber()
     @IsPositive()
     @IsOptional()
     @ApiProperty({ required: false })
