@@ -5,13 +5,15 @@ import { ComicsModule } from './comics/comics.module';
 import { CharactersModule } from './characters/characters.module';
 import { CreatorsModule } from './creators/creators.module';
 import { MongooseModule } from '@nestjs/mongoose/dist/mongoose.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
     ComicsModule,
     CharactersModule,
     CreatorsModule,
-    MongooseModule.forRoot('mongodb://0.0.0.0/marvelAPI')
+    MongooseModule.forRoot('mongodb://0.0.0.0/marvelAPI'),
+    UsersModule
   ],
   controllers: [AppController],
   providers: [AppService],
