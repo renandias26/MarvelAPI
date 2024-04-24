@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { createUserDto } from './dto/createUser.dto';
 import { IsObjectIdPipe } from 'nestjs-object-id/dist/pipes/is-object-id.pipe';
 import { updateUserDto } from './dto/updateUser.dto';
 import { loginUserDto } from './dto/loginUser.dto';
-import { ApiBadRequestResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('users')
 @Controller('users')
@@ -39,7 +40,9 @@ export class UsersController {
     return this.usersService.update(id, UserDto);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
+  @ApiBearerAuth()
   @ApiOkResponse()
   @ApiBadRequestResponse()
   remove(@Param('id', IsObjectIdPipe) id: string) {

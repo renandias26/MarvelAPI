@@ -18,10 +18,10 @@ export class UsersService {
     return new this.userModel(UserDto).save()
   }
 
-  async login(UserDto: loginUserDto): Promise<boolean> {
+  async login(UserDto: loginUserDto): Promise<string> {
     return await this.userModel
       .findOne({ email: UserDto.email })
-      .then(user => bcrypt.compare(UserDto.password, user.password))
+      .then(user => bcrypt.compare(UserDto.password, user.password) ? `${user._id}` : '')
   }
 
   findOne(id: string) {

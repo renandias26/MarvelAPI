@@ -27,8 +27,7 @@ export class CharactersService {
     }
 
     const characters = await this.getCharactersAPI()
-    this.characterModel.insertMany(characters)
-    return characters
+    return await this.characterModel.insertMany(characters)
   }
 
   private async getCharactersAPI(): Promise<Character[]> {

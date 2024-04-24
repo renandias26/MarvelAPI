@@ -6,6 +6,7 @@ import { CharactersModule } from './characters/characters.module';
 import { CreatorsModule } from './creators/creators.module';
 import { MongooseModule } from '@nestjs/mongoose/dist/mongoose.module';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { UsersModule } from './users/users.module';
     CharactersModule,
     CreatorsModule,
     MongooseModule.forRoot('mongodb://0.0.0.0/marvelAPI'),
-    UsersModule
+    UsersModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

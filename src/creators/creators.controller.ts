@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, UseGuards } from '@nestjs/common';
 import { CreatorsService } from './creators.service';
 import { CreatorDto } from './dto/creator.dto';
 import { IsObjectIdPipe } from 'nestjs-object-id/dist/pipes/is-object-id.pipe';
-import { ApiBadRequestResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('creators')
 @Controller('creators')
@@ -37,7 +38,9 @@ export class CreatorsController {
     return this.creatorsService.update(id, CreatorDto);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
+  @ApiBearerAuth()
   @ApiOkResponse()
   @ApiBadRequestResponse()
   remove(@Param('id', IsObjectIdPipe) id: string) {
