@@ -8,16 +8,19 @@ export class Comic {
     @Prop({ require: true })
     title: string;
 
-    @Prop({ require: false })
+    @Prop({ require: true })
     pageCount: number
 
+    @Prop({ require: true })
+    format: string
+
     @Prop({ require: false })
-    format: String
+    imagePath: string
 
     @Prop({ require: true })
-    imagePath: String
+    dateOnStart: Date
 
-    @Prop({ require: true })
+    @Prop({ require: false })
     idApi: number
 }
 

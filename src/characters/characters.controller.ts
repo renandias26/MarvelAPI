@@ -1,34 +1,49 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, UseGuards } from '@nestjs/common';
 import { CharactersService } from './characters.service';
-import { CreateCharacterDto } from './dto/create-character.dto';
-import { UpdateCharacterDto } from './dto/update-character.dto';
+import { CharacterDto } from './dto/character.dto';
+import { IsObjectIdPipe } from 'nestjs-object-id/dist/pipes/is-object-id.pipe';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/auth/auth.guard';
 
+@ApiTags('characters')
 @Controller('characters')
 export class CharactersController {
-  constructor(private readonly charactersService: CharactersService) {}
+  constructor(private readonly charactersService: CharactersService) { }
 
   @Post()
-  create(@Body() createCharacterDto: CreateCharacterDto) {
-    return this.charactersService.create(createCharacterDto);
+  @ApiOkResponse()
+  @ApiBadRequestResponse()
+  create(@Body(new ValidationPipe()) CharacterDto: CharacterDto) {
+    return this.charactersService.create(CharacterDto);
   }
 
   @Get()
+  @ApiOkResponse()
+  @ApiBadRequestResponse()
   findAll() {
     return this.charactersService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.charactersService.findOne(+id);
+  @ApiOkResponse()
+  @ApiBadRequestResponse()
+  findOne(@Param('id', IsObjectIdPipe) id: string) {
+    return this.charactersService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCharacterDto: UpdateCharacterDto) {
-    return this.charactersService.update(+id, updateCharacterDto);
+  @ApiOkResponse()
+  @ApiBadRequestResponse()
+  update(@Param('id', IsObjectIdPipe) id: string, @Body(new ValidationPipe()) CharacterDto: CharacterDto) {
+    return this.charactersService.update(id, CharacterDto);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.charactersService.remove(+id);
+  @ApiBearerAuth()
+  @ApiOkResponse()
+  @ApiBadRequestResponse()
+  remove(@Param('id', IsObjectIdPipe) id: string) {
+    return this.charactersService.remove(id);
   }
 }

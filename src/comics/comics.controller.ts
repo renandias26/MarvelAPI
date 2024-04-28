@@ -1,34 +1,49 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, UseGuards } from '@nestjs/common';
 import { ComicsService } from './comics.service';
-import { CreateComicDto } from './dto/create-comic.dto';
-import { UpdateComicDto } from './dto/update-comic.dto';
+import { ComicDto } from './dto/comic.dto';
+import { IsObjectIdPipe } from 'nestjs-object-id/dist/pipes/is-object-id.pipe';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/auth/auth.guard';
 
+@ApiTags('comics')
 @Controller('comics')
 export class ComicsController {
-  constructor(private readonly comicsService: ComicsService) {}
+  constructor(private readonly comicsService: ComicsService) { }
 
   @Post()
-  create(@Body() createComicDto: CreateComicDto) {
-    return this.comicsService.create(createComicDto);
+  @ApiOkResponse()
+  @ApiBadRequestResponse()
+  create(@Body(new ValidationPipe()) ComicDto: ComicDto) {
+    return this.comicsService.create(ComicDto);
   }
 
   @Get()
+  @ApiOkResponse()
+  @ApiBadRequestResponse()
   findAll() {
     return this.comicsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.comicsService.findOne(+id);
+  @ApiOkResponse()
+  @ApiBadRequestResponse()
+  findOne(@Param('id', IsObjectIdPipe) id: string) {
+    return this.comicsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateComicDto: UpdateComicDto) {
-    return this.comicsService.update(+id, updateComicDto);
+  @ApiOkResponse()
+  @ApiBadRequestResponse()
+  update(@Param('id', IsObjectIdPipe) id: string, @Body(new ValidationPipe()) ComicDto: ComicDto) {
+    return this.comicsService.update(id, ComicDto);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.comicsService.remove(+id);
+  @ApiBearerAuth()
+  @ApiOkResponse()
+  @ApiBadRequestResponse()
+  remove(@Param('id', IsObjectIdPipe) id: string) {
+    return this.comicsService.remove(id);
   }
 }

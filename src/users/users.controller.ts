@@ -1,41 +1,43 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, UseGuards } from '@nestjs/common';
-import { CreatorsService } from './creators.service';
-import { CreatorDto } from './dto/creator.dto';
+import { UsersService } from './users.service';
+import { createUserDto } from './dto/createUser.dto';
 import { IsObjectIdPipe } from 'nestjs-object-id/dist/pipes/is-object-id.pipe';
+import { updateUserDto } from './dto/updateUser.dto';
+import { loginUserDto } from './dto/loginUser.dto';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/auth.guard';
 
-@ApiTags('creators')
-@Controller('creators')
-export class CreatorsController {
-  constructor(private readonly creatorsService: CreatorsService) { }
+@ApiTags('users')
+@Controller('users')
+export class UsersController {
+  constructor(private readonly usersService: UsersService) { }
 
   @Post()
   @ApiOkResponse()
   @ApiBadRequestResponse()
-  create(@Body(new ValidationPipe()) CreatorDto: CreatorDto) {
-    return this.creatorsService.create(CreatorDto);
+  create(@Body(new ValidationPipe()) UserDto: createUserDto) {
+    return this.usersService.create(UserDto);
   }
 
   @Get()
   @ApiOkResponse()
   @ApiBadRequestResponse()
-  findAll() {
-    return this.creatorsService.findAll();
+  login(@Body(new ValidationPipe()) UserDto: loginUserDto) {
+    return this.usersService.login(UserDto);
   }
 
   @Get(':id')
   @ApiOkResponse()
   @ApiBadRequestResponse()
   findOne(@Param('id', IsObjectIdPipe) id: string) {
-    return this.creatorsService.findOne(id);
+    return this.usersService.findOne(id);
   }
 
   @Patch(':id')
   @ApiOkResponse()
   @ApiBadRequestResponse()
-  update(@Param('id', IsObjectIdPipe) id: string, @Body(new ValidationPipe()) CreatorDto: CreatorDto) {
-    return this.creatorsService.update(id, CreatorDto);
+  update(@Param('id', IsObjectIdPipe) id: string, @Body(new ValidationPipe()) UserDto: updateUserDto) {
+    return this.usersService.update(id, UserDto);
   }
 
   @UseGuards(AuthGuard)
@@ -44,6 +46,6 @@ export class CreatorsController {
   @ApiOkResponse()
   @ApiBadRequestResponse()
   remove(@Param('id', IsObjectIdPipe) id: string) {
-    return this.creatorsService.remove(id);
+    return this.usersService.remove(id);
   }
 }
