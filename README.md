@@ -17,7 +17,7 @@ Uma API RESTful desenvolvida com NestJS que serve como intermediária entre a Ma
 
 - TypeORM: ORM para mapeamento objeto-relacional
 
-- PostgreSQL: Banco de dados relacional
+- MongoDB: Banco de dados NoSQL
 
 - Swagger: Documentação de API
 
