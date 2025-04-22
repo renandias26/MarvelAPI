@@ -14,9 +14,7 @@ Uma API RESTful desenvolvida com NestJS que serve como intermediária entre a Ma
 
 ## 🛠️ Tecnologias
 - NestJS: Framework Node.js para backend
-
-- TypeORM: ORM para mapeamento objeto-relacional
-
+  
 - MongoDB: Banco de dados NoSQL
 
 - Swagger: Documentação de API
