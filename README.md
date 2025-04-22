@@ -12,6 +12,8 @@ Uma API RESTful desenvolvida com NestJS que serve como intermediária entre a Ma
 
 - Endpoints especializados para análises e estatísticas da saga
 
+- Autenticação JWT
+
 ## 🛠️ Tecnologias
 - NestJS: Framework Node.js para backend
   
