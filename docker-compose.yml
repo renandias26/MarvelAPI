@@ -1,0 +1,8 @@
+name: marvel_api
+services:
+  mongo:
+    image: mongo:latest
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
